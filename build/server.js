@@ -35,5 +35,5 @@ const app = (0, express_1.default)();
 app.use("/api/users", userRoutes_1.default);
 const PORT = process.env.port || 5000;
 app.listen(PORT, () => {
-    console.log(`⚡[SERVER]: Server running on http://localhost:${PORT}`);
+    console.log(`\x1b[36m[server]: Server started at http://localhost:${PORT}\x1b[360`);
 });
