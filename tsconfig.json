@@ -9,6 +9,6 @@
 		"skipLibCheck": true,
 		"moduleResolution": "node16"
 	},
-	"include": ["src/**/*.ts"],
+	"include": ["src/**/*.ts", "db.ts"],
 	"exclude": ["node_modules"]
 }

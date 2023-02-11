@@ -1,0 +1,24 @@
+{
+	"sqltools.connections": [
+		{
+			"previewLimit": 50,
+			"server": "dpg-cfi7nto2i3murce8tdl0-a.frankfurt-postgres.render.com",
+			"port": 5432,
+			"askForPassword": true,
+			"driver": "PostgreSQL",
+			"name": "barista",
+			"database": "barista",
+			"username": "administrator"
+		},
+		{
+			"previewLimit": 50,
+			"server": "dpg-cfi7nto2i3murce8tdl0-a.frankfurt-postgres.render.com",
+			"port": 5432,
+			"askForPassword": true,
+			"driver": "PostgreSQL",
+			"name": "render",
+			"database": "barista",
+			"username": "administrator"
+		}
+	]
+}

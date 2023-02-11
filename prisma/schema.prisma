@@ -1,0 +1,78 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id        String   @id @default(uuid())
+    name      String   @db.VarChar(20)
+    email     String   @unique @db.VarChar(300)
+    password  String
+    verified  Boolean  @default(false)
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    shops       Shop[]
+    customItems CustomItem[]
+    reviews     Review[]
+}
+
+model Shop {
+    id          String   @id @default(uuid())
+    name        String   @db.VarChar(20)
+    owner       User     @relation(fields: [ownerId], references: [id])
+    ownerId     String   @map("owner_id")
+    description String?  @db.VarChar(1000)
+    address     String
+    phone       String   @db.VarChar(20)
+    website     String?
+    email       String?  @db.VarChar(300)
+    instagram   String?  @db.VarChar(20)
+    rating      Float    @default(0)
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+
+    MenuItem MenuItem[]
+}
+
+model MenuItem {
+    id          String   @id @default(uuid())
+    name        String   @db.VarChar(20)
+    shop        Shop     @relation(fields: [shopId], references: [id])
+    shopId      String   @map("shop_id")
+    description String?  @db.VarChar(1000)
+    ingredients String
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+model CustomItem {
+    id          String      @id @default(uuid())
+    name        String      @db.VarChar(20)
+    creator     User        @relation(fields: [creatorId], references: [id])
+    creatorId   String      @map("creator_id")
+    description String?     @db.VarChar(1000)
+    ingredients String
+    status      OrderStatus @default(PENDING)
+    createdAt   DateTime    @default(now()) @map("created_at")
+    updatedAt   DateTime    @updatedAt @map("updated_at")
+}
+
+model Review {
+    id        String   @id @default(uuid())
+    author    User     @relation(fields: [authorId], references: [id])
+    authorId  String   @map("author_id")
+    review    String   @db.VarChar(1000)
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+enum OrderStatus {
+    PENDING
+    REJECTED
+    FULFILLED
+}
