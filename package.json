@@ -20,6 +20,7 @@
 	"homepage": "https://github.com/takaoisdabest/barista-server#readme",
 	"dependencies": {
 		"@prisma/client": "^4.10.1",
+		"cloudinary": "^1.33.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
