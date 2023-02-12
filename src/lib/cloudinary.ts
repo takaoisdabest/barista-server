@@ -18,11 +18,13 @@ const uploadImage = async (image: string) => {
 	console.log(res.secure_url);
 
 	// Generate
-	return cloudinary.url(public_id, {
+	const url = cloudinary.url(public_id, {
 		width: 75,
 		height: 75,
 		Crop: "fill"
 	});
+
+	return url;
 };
 
 export default uploadImage;

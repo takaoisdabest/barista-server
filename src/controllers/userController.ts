@@ -17,9 +17,9 @@ export const registerUser = expressAsyncHandler(async (req: Request, res: Respon
 
 	let profile_image = null;
 	if (image) {
-		profile_image = uploadImage(image);
+		profile_image = await uploadImage(image);
 	}
 
-	const user = await prisma.user.create({ data: { name, email, password } });
+	const user = await prisma.user.create({ data: { name, email, password, image: profile_image } });
 	res.status(200).json({ user });
 });

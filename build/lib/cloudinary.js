@@ -15,10 +15,11 @@ const uploadImage = async (image) => {
     console.log(res);
     console.log(res.secure_url);
     // Generate
-    return cloudinary_1.v2.url(public_id, {
+    const url = cloudinary_1.v2.url(public_id, {
         width: 75,
         height: 75,
         Crop: "fill"
     });
+    return url;
 };
 exports.default = uploadImage;

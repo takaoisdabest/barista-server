@@ -7,6 +7,7 @@ CREATE TABLE "User" (
     "name" VARCHAR(20) NOT NULL,
     "email" VARCHAR(300) NOT NULL,
     "password" TEXT NOT NULL,
+    "image" TEXT,
     "verified" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,

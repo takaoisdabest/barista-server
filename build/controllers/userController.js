@@ -18,8 +18,8 @@ exports.registerUser = (0, express_async_handler_1.default)(async (req, res) => 
     }
     let profile_image = null;
     if (image) {
-        profile_image = (0, cloudinary_1.default)(image);
+        profile_image = await (0, cloudinary_1.default)(image);
     }
-    const user = await db_1.default.user.create({ data: { name, email, password } });
+    const user = await db_1.default.user.create({ data: { name, email, password, image: profile_image } });
     res.status(200).json({ user });
 });
