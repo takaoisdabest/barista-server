@@ -1,9 +1,10 @@
+import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
-import bcrypt from "bcryptjs";
 
 import prisma from "../config/db";
 import uploadImage from "../lib/cloudinary";
+import generateToken from "../lib/generate-token";
 
 // @desc    Register new user
 // @route   POST /api/users/register
@@ -34,5 +35,12 @@ export const registerUser = expressAsyncHandler(async (req: Request, res: Respon
 
 	// Save to database
 	const user = await prisma.user.create({ data: { name, email, password: hashedPassword, image: profile_image } });
-	res.status(200).json({ user });
+
+	res.status(200).json({
+		id: user.id,
+		name: user.name,
+		email: user.email,
+		image: user.image,
+		token: generateToken(user.id)
+	});
 });

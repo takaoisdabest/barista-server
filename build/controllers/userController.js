@@ -4,10 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerUser = void 0;
-const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const db_1 = __importDefault(require("../config/db"));
 const cloudinary_1 = __importDefault(require("../lib/cloudinary"));
+const generate_token_1 = __importDefault(require("../lib/generate-token"));
 // @desc    Register new user
 // @route   POST /api/users/register
 // @access  Public
@@ -32,5 +33,11 @@ exports.registerUser = (0, express_async_handler_1.default)(async (req, res) => 
     const hashedPassword = bcryptjs_1.default.hashSync(password, salt);
     // Save to database
     const user = await db_1.default.user.create({ data: { name, email, password: hashedPassword, image: profile_image } });
-    res.status(200).json({ user });
+    res.status(200).json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        token: (0, generate_token_1.default)(user.id)
+    });
 });
