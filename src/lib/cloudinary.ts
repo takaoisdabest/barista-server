@@ -19,8 +19,9 @@ const uploadImage = async (image: string, type?: "profile" | "banner" | "thumbna
 	// Upload
 	const res = await cloudinary.uploader.upload(image, { public_id, unique_filename: true });
 
-	console.log(res);
-	console.log(res.secure_url);
+	if (!res) {
+		return null;
+	}
 
 	// Generate item image without cropping
 	if (type === "item") {

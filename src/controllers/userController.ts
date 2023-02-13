@@ -18,6 +18,10 @@ export const registerUser = expressAsyncHandler(async (req: Request, res: Respon
 	let profile_image = null;
 	if (image) {
 		profile_image = await uploadImage(image);
+		if (profile_image) {
+			res.status(500);
+			throw new Error("Sorry, Something went wrong");
+		}
 	}
 
 	const user = await prisma.user.create({ data: { name, email, password, image: profile_image } });
