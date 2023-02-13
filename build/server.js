@@ -29,6 +29,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
+// Middlewares
+const errorHandler_1 = __importDefault(require("./middleware/errorHandler"));
 // Routes
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 dotenv.config();
@@ -36,6 +38,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json({ limit: "30mb" }));
 app.use(express_1.default.urlencoded({ limit: "30mb", extended: true }));
 app.use((0, cors_1.default)());
+app.use(errorHandler_1.default);
 app.use("/api/users", userRoutes_1.default);
 const PORT = process.env.port || 5000;
 app.listen(PORT, () => {

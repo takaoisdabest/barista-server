@@ -51,7 +51,7 @@ const uploadImage = async (image: string, type?: "profile" | "banner" | "thumbna
 			break;
 	}
 
-	const url = cloudinary.url(public_id, { width, height, Crop: "fill" });
+	const url = cloudinary.url(public_id, { width, height, crop: "fill" });
 	return url;
 };
 
