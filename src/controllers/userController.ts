@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
+import bcrypt from "bcryptjs";
 
 import prisma from "../config/db";
 import uploadImage from "../lib/cloudinary";
@@ -10,11 +11,13 @@ import uploadImage from "../lib/cloudinary";
 export const registerUser = expressAsyncHandler(async (req: Request, res: Response) => {
 	const { name, email, password, image } = req.body;
 
+	// Validate data
 	if (!name || !email || !password) {
 		res.status(400);
 		throw new Error("Please enter all fields");
 	}
 
+	// Upload profile image if it exists
 	let profile_image = null;
 	if (image) {
 		profile_image = await uploadImage(image);
@@ -25,6 +28,11 @@ export const registerUser = expressAsyncHandler(async (req: Request, res: Respon
 		}
 	}
 
-	const user = await prisma.user.create({ data: { name, email, password, image: profile_image } });
+	// Hash password
+	const salt = bcrypt.genSaltSync();
+	const hashedPassword = bcrypt.hashSync(password, salt);
+
+	// Save to database
+	const user = await prisma.user.create({ data: { name, email, password: hashedPassword, image: profile_image } });
 	res.status(200).json({ user });
 });

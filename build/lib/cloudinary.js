@@ -12,7 +12,7 @@ const uploadImage = async (image, type) => {
     const public_id = (0, crypto_1.randomUUID)();
     const size = {
         profile: { width: 75, height: 75 },
-        banner: { width: 1920, height: 256 },
+        banner: { width: 1920, height: 384 },
         thumbnail: { width: 256, height: 144 }
     };
     // Upload
