@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUser = void 0;
+exports.loginUser = exports.registerUser = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const db_1 = __importDefault(require("../config/db"));
@@ -33,6 +33,35 @@ exports.registerUser = (0, express_async_handler_1.default)(async (req, res) => 
     const hashedPassword = bcryptjs_1.default.hashSync(password, salt);
     // Save to database
     const user = await db_1.default.user.create({ data: { name, email, password: hashedPassword, image: profile_image } });
+    res.status(200).json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+        token: (0, generate_token_1.default)(user.id)
+    });
+});
+// @desc    Authenticat a user
+// @route   POST /api/users/login
+// @access  Public
+exports.loginUser = (0, express_async_handler_1.default)(async (req, res) => {
+    const { email, password } = req.body;
+    // Validate data
+    if (!email || !password) {
+        res.status(400);
+        throw new Error("Please enter all fields");
+    }
+    // Get user from database
+    const user = await db_1.default.user.findUnique({ where: { email: email } });
+    if (!user) {
+        res.status(404);
+        throw new Error(`User with email '${email}' does not exist`);
+    }
+    // Check password
+    if (!bcryptjs_1.default.compareSync(password, user.password)) {
+        res.status(401);
+        throw new Error("Wrong password");
+    }
     res.status(200).json({
         id: user.id,
         name: user.name,
